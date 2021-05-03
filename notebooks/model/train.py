@@ -2,11 +2,11 @@ from torch.utils.data import DataLoader
 import pandas as pd
 import numpy as np
 import yaml
-from transformers import AutoTokenizer, AutoModel, AdamW, get_linear_schedule_with_warmup
+from transformers import AdamW, get_linear_schedule_with_warmup
 from data import create_dataloader
 import torch
 from model import Classifier
-
+from collections import defaultdict
 
 with open('config.yml', 'r') as f:
     config = yaml.safe_load(f)
@@ -23,18 +23,16 @@ VALID = pd.read_csv(DATA_PATH + "\\" + config['data']['validation_filename'])
 
 MAX_LEN = config['model']['max_seq_length']
 BS = config['training']['batch_size']
-TOKENIZER = AutoTokenizer.from_pretrained(config['model']['model_name'], 
-do_lower_case=config['model']['do_lower_case'])
 
 """Normalização de datasets para leitura do modelo"""
 
-device = torch.device('cuda' if torch.cuda.is_available() else "cpu")
-TRAIN_DATA_LOADER = create_dataloader(TRAIN, TOKENIZER, MAX_LEN, BS)
-TEST_DATA_LOADER = create_dataloader(TEST, TOKENIZER, MAX_LEN, BS)
-VALID_DATA_LOADER = create_dataloader(VALID, TOKENIZER, MAX_LEN, BS)
+TRAIN_DATA_LOADER = create_dataloader(df=TRAIN, max_len=MAX_LEN, bs=BS)
+TEST_DATA_LOADER = create_dataloader(df=TEST, max_len=MAX_LEN, bs=BS)
+VALID_DATA_LOADER = create_dataloader(df=VALID, max_len=MAX_LEN, bs=BS)
 
 """Calling Model and sending to CUDA"""
 
+device = torch.device('cuda' if torch.cuda.is_available() else "cpu")
 model = Classifier()
 model.to(device)
 
@@ -42,18 +40,16 @@ model.to(device)
 
 optimizer = AdamW(
     model.parameters(),
-    lr=config['training']['learning_rate'],
+    lr=float(config['training']['learning_rate']),
     correct_bias=False
 )
 
 loss_fn = torch.nn.BCELoss()
 
-total_steps = len(TRAIN_DATA_LOADER) * config['training']['num_epochs']
-
 scheduler = get_linear_schedule_with_warmup(
     optimizer,
-    num_warmup_steps=config['training']['num_warmup_steps'],
-    num_training_steps=total_steps
+    num_warmup_steps=float(config['training']['num_warmup_steps']),
+    num_training_steps=int(config['training']['num_epochs'])
 )
 
 def train_epoch(model, data_loader, loss_fn, optimizer, device, scheduler, n_examples):
@@ -115,7 +111,7 @@ def eval_model(model, data_loader, loss_fn, device, n_examples):
 history = defaultdict(list)
 best_accuracy = 0
 
-for epoch in range(config['training']['num_epochs']):
+for epoch in range(int(config['training']['num_epochs'])):
     print(f"Epoch {epoch + 1}/{config['training']['num_epochs']}")
     print(f"-" * 10)
 
@@ -126,7 +122,7 @@ for epoch in range(config['training']['num_epochs']):
         optimizer,
         device,
         scheduler,
-        len(TRAIN_DATA_LOADER)
+        len(TRAIN)
         )
     print(f"Train loss {train_loss} accuracy {train_acc}")
 
@@ -137,7 +133,7 @@ for epoch in range(config['training']['num_epochs']):
         optimizer,
         device,
         scheduler,
-        len(TRAIN_DATA_LOADER)
+        len(VALID)
         )
     print(f"Val loss {train_loss} accuracy {train_acc}")
 

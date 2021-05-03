@@ -1,5 +1,5 @@
 import torch
-from transformers import AutoModel, AutoTokenizer
+from transformers import AutoModel
 import yaml
 
 with open('config.yml', 'r') as f:

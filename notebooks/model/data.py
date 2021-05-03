@@ -1,23 +1,31 @@
 from torch.utils.data import Dataset, DataLoader
+from transformers import AutoTokenizer
+import torch
+import yaml
+
+with open('config.yml', 'r') as f:
+    config = yaml.safe_load(f)
 
 class ShapingDataset(Dataset):
 
-    def __init__(self, text, target, tokenizer, max_len):
+    def __init__(self, text, target, max_len):
+        super().__init__()
         self.text = text
         self.target = target
-        self.tokenizer = tokenizer
         self.max_len = max_len
 
     def __len__(self):
         return len(self.text)
 
     def __getitem__(self, item):
+        tokenizer = AutoTokenizer.from_pretrained(config['model']['model_name'], do_lower_case=config['model']['do_lower_case'])
         text = str(self.text[item])
-        encoding = tokenizer.encode_plus(
+        encoding = tokenizer(
         text,
         padding='max_length',
         truncation=True,
-        return_tensors='pt'
+        return_tensors='pt',
+        max_length=int(config['model']['max_seq_length'])
         )
         return {
             'input_ids': encoding['input_ids'],
@@ -25,11 +33,10 @@ class ShapingDataset(Dataset):
             'targets': torch.tensor(self.target[item], dtype=torch.float64) 
         }
 
-def create_dataloader(df, tokenizer, max_len, bs, num_workers=4):
+def create_dataloader(df, max_len, bs, num_workers=4):
     dataset = ShapingDataset(
         text=df['text'].to_numpy(),
         target=df['target'].to_numpy(),
-        tokenizer=tokenizer,
         max_len=max_len
     )
     data_loader = DataLoader(dataset, bs, num_workers)
