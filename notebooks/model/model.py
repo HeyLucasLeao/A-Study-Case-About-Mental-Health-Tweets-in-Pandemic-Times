@@ -6,6 +6,7 @@ with open('config.yml', 'r') as f:
     config = yaml.safe_load(f)
 
 MODEL = AutoModel.from_pretrained(config['model']['model_name'])
+criterion = torch.nn.BCELoss()
 
 
 for param in MODEL.parameters():

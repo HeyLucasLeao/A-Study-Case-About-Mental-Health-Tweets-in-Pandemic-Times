@@ -18,7 +18,7 @@ class ShapingDataset(Dataset):
         return len(self.text)
 
     def __getitem__(self, item):
-        tokenizer = AutoTokenizer.from_pretrained(config['model']['model_name'], do_lower_case=config['model']['do_lower_case'])
+        tokenizer = AutoTokenizer.from_pretrained(config['model']['model_name'], do_lower_case=True)
         text = str(self.text[item])
         encoding = tokenizer(
         text,
@@ -30,7 +30,7 @@ class ShapingDataset(Dataset):
         return {
             'input_ids': encoding['input_ids'],
             'attention_mask': encoding['attention_mask'],
-            'targets': torch.tensor(self.target[item], dtype=torch.float64) 
+            'targets': torch.tensor(self.target[item], dtype=torch.double) 
         }
 
 def create_dataloader(df, max_len, bs, num_workers=4):
