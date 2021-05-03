@@ -4,10 +4,17 @@ import numpy as np
 import yaml
 import torch
 from collections import defaultdict
-
+import random
 from data import create_dataloader
 from model import Classifier, criterion
-from training_structure import train_epoch, eval_model, optimizer, scheduler
+from transformers import AdamW, get_linear_schedule_with_warmup
+from training_structure import train_epoch, eval_model
+
+SEED = 42
+random.seed(SEED)
+np.random.seed(SEED)
+torch.manual_seed(SEED)
+torch.cuda.manual_seed_all(SEED)
 
 with open('config.yml', 'r') as f:
     config = yaml.safe_load(f)
@@ -40,6 +47,20 @@ criterion = criterion
 criterion.to(device)
 model.to(device)
 
+"""Otimizador e Scheduler"""
+
+optimizer = AdamW(
+    model.parameters(),
+    lr=float(config['training']['learning_rate']),
+    correct_bias=False
+)
+
+scheduler = get_linear_schedule_with_warmup(
+    optimizer,
+    num_warmup_steps=config['training']['num_warmup_steps'],
+    num_training_steps=config['training']['num_epochs']
+)
+
 """Training Loop"""
 
 EPOCHS = config['training']['num_epochs']
@@ -48,25 +69,23 @@ for epoch in range(EPOCHS):
     print(f"Epoch {epoch + 1}/{EPOCHS}")
     print(f"-" * 10)
    
-    train_acc, train_loss = train_epoch(
+    train_loss = train_epoch(
         model, 
         TRAIN_DATA_LOADER,
         criterion,
         optimizer,
         device,
         scheduler,
-        len(TRAIN)
         )
     print(f"Train loss {train_loss} accuracy {train_acc}")
 
-    val_acc, val_loss = eval_model(
+    val_loss = eval_model(
         model, 
         VALID_DATA_LOADER,
         criterion,
         optimizer,
         device,
         scheduler,
-        len(VALID)
         )
     print(f"Val loss {train_loss} accuracy {train_acc}")
 
@@ -74,12 +93,6 @@ for epoch in range(EPOCHS):
 history = defaultdict(list)
 best_accuracy = 0
 
-history['train_acc'].append(train_acc)
 history['train_loss'].append(train_loss)
-
-history['val_acc'].append(val_acc)
 history['val_loss'].append(val_loss)
-
-if val_acc > best_accuracy:
-    torch.save(model, 'model.pth')
-    best_accuracy = val_acc
+torch.save(model, 'model.pth')

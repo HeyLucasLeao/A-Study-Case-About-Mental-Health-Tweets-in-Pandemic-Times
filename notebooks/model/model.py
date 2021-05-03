@@ -18,19 +18,20 @@ class Classifier(torch.nn.Module):
     def __init__(self):
         super().__init__()
         self.pretrained_model = MODEL
-        self.dropout = torch.nn.Dropout(p=0.3)
-        self.out = torch.nn.Linear(
+        self.linear1 = torch.nn.Linear(
             self.pretrained_model.config.hidden_size,
             out_features=1
         )
+        self.dropout = torch.nn.Dropout(0.3)
         self.sigmoid = torch.nn.Sigmoid()
 
     def forward(self, input_ids, attention_mask):
-        _, pooled_output = self.pretrained_model(
+        _, output = self.pretrained_model.forward(
             input_ids = input_ids,
             attention_mask = attention_mask
         )
-        output = self.drop(pooled_output)
-        output = self.out(output)
-        return self.sigmoid(output)
+        output = self.dropout(output)
+        output = self.linear1(output)
+        output = self.sigmoid(output)
+        return output
 

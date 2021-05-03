@@ -1,24 +1,10 @@
 import pandas as pd
 import numpy as np
 import torch
-from transformers import AdamW, get_linear_schedule_with_warmup
-from model import MODEL
 import yaml
 
 with open('config.yml', 'r') as f:
     config = yaml.safe_load(f)
-
-optimizer = AdamW(
-    MODEL.parameters(),
-    lr=float(config['training']['learning_rate']),
-    correct_bias=False
-)
-
-scheduler = get_linear_schedule_with_warmup(
-    optimizer,
-    num_warmup_steps=config['training']['num_warmup_steps'],
-    num_training_steps=config['training']['num_epochs']
-)
 
 def train_epoch(
                 model, 
@@ -26,12 +12,10 @@ def train_epoch(
                 criterion, 
                 optimizer, 
                 device, 
-                scheduler, 
-                n_examples):
+                scheduler):
 
     model.train()
-    losses = []
-    correct_predictions = 0
+    losses = np.array([])
 
     for data in data_loader:
         input_ids = data['input_ids'].to(device)
@@ -41,37 +25,34 @@ def train_epoch(
         outputs = model(
             input_ids=input_ids,
             attention_mask=attention_mask
-            )
-        _, preds = torch.max(outputs, dim=1)
+            )        
         
-        
+        #função de perda
         loss = criterion(outputs, targets)
-
-        correct_predictions += torch.sum(preds == targets)
         losses.append(loss.item())
 
-        loss.backward()
-        torch.nn.utils.clip_grad_norm_(model.parameters(), max_norm = 1.0)
-        optimizer.step()
-        scheduler.step()
+        #Back Propagation
         optimizer.zero_grad()
+        loss.backward()
+        optimizer.step()
+
+        #atualiza o learning rate
+        scheduler.step()
+
         
     
-    train_loss = (correct_predictions.double() / n_examples)
-    train_acc = (np.mean(losses))
+    avg_loss = np.mean(losses)
 
-    return train_loss, train_acc
+    return avg_loss
 
 def eval_model(
             model, 
             data_loader, 
             criterion,
-            device, 
-            n_examples):
+            device):
 
-    model = model.eval()
-    losses = []
-    correct_predictions = 0
+    model.eval()
+    losses = np.array([])
 
     with torch.no_grad():
         for data in data_loader:
@@ -84,14 +65,20 @@ def eval_model(
                 input_ids=input_ids,
                 attention_mask=attention_mask
                 )
-            _, preds = torch.max(outputs, dim=1)
 
+            #função de perda
             loss = criterion(outputs, targets)
-
-            correct_predictions += torch.sum(preds == targets)
             losses.append(loss.item())
 
-    valid_loss = (correct_predictions.double() / n_examples)
-    valid_acc = (np.mean(losses))
+            #Back Propagation
+            optimizer.zero_grad()
+            loss.backward()
+            torch.nn.utils.clip_grad_norm_(model.parameters(), max_norm = 1.0)
+            optimizer.step()
 
-    return valid_loss, valid_acc
+            #atualiza o learning rate
+            scheduler.step()
+ 
+    avg_loss = np.mean(losses)
+
+    return avg_loss

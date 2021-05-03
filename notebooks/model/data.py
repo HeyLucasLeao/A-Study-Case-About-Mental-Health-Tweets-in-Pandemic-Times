@@ -6,11 +6,15 @@ import yaml
 with open('config.yml', 'r') as f:
     config = yaml.safe_load(f)
 
+
+TOKENIZER = AutoTokenizer.from_pretrained(config['model']['model_name'], do_lower_case=True)
+
 class ShapingDataset(Dataset):
 
     def __init__(self, text, target, max_len):
         super().__init__()
         self.text = text
+        self.tokenizer = TOKENIZER
         self.target = target
         self.max_len = max_len
 
@@ -18,9 +22,8 @@ class ShapingDataset(Dataset):
         return len(self.text)
 
     def __getitem__(self, item):
-        tokenizer = AutoTokenizer.from_pretrained(config['model']['model_name'], do_lower_case=True)
         text = str(self.text[item])
-        encoding = tokenizer(
+        encoding = self.tokenizer(
         text,
         padding='max_length',
         truncation=True,
