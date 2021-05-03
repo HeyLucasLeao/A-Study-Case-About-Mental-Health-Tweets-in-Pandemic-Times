@@ -15,32 +15,21 @@ for param in MODEL.parameters():
 class Classifier(torch.nn.Module):
 
     def __init__(self):
-        super(Classifier).__init__()
-        self.model = MODEL
-        self.dense1 = torch.nn.Linear(
-            in_features=MODEL.config.hidden_size * 
-            MODEL.config.max_position_embeddings, 
-            out_features=1000
-            )
-        self.dense2 = torch.nn.Linear(
-            in_features=1000,
+        super().__init__()
+        self.pretrained_model = MODEL
+        self.dropout = torch.nn.Dropout(p=0.3)
+        self.out = torch.nn.Linear(
+            self.pretrained_model.config.hidden_size,
             out_features=1
         )
-        self.dropout = torch.nn.Dropout(0.3)
-        self.relu = torch.nn.ReLU()
         self.sigmoid = torch.nn.Sigmoid()
 
     def forward(self, input_ids, attention_mask):
-        y_hat = self.model(
+        _, pooled_output = self.pretrained_model(
             input_ids = input_ids,
             attention_mask = attention_mask
         )
-        y_hat = y_hat[0]
-        y_hat = y_hat.flatten(start_dim=1)
-        y_hat = y_hat = self.dense1(y_hat)
-        y_hat = self.relu(y_hat)
-        y_hat = self.dropout(y_hat)
-        y_hat = self.dense2(y_hat)
-        y_hat = self.sigmoid(y_hat)
-        return y_hat
+        output = self.drop(pooled_output)
+        output = self.out(output)
+        return self.sigmoid(output)
 
