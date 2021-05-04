@@ -31,7 +31,7 @@ VALID = pd.read_csv(DATA_PATH + "\\" + config['data']['validation_filename'])
 "Constantes para o modelo e para o treino"
 
 MAX_LEN = config['model']['max_seq_length']
-BS = config['training']['batch_size']
+BS = config['model']['batch_size']
 
 """Normalização de datasets para leitura do modelo"""
 
@@ -52,19 +52,19 @@ model.to(device)
 
 optimizer = AdamW(
     model.parameters(),
-    lr=float(config['training']['learning_rate']),
+    lr=float(config['model']['learning_rate']),
     correct_bias=False
 )
 
 scheduler = get_linear_schedule_with_warmup(
     optimizer,
-    num_warmup_steps=config['training']['num_warmup_steps'],
-    num_training_steps=config['training']['num_epochs']
+    num_warmup_steps=config['model']['num_warmup_steps'],
+    num_training_steps=config['model']['num_epochs']
 )
 
 """Training Loop"""
 
-EPOCHS = config['training']['num_epochs']
+EPOCHS = config['model']['num_epochs']
 
 for epoch in range(EPOCHS):
     print(f"Epoch {epoch + 1}/{EPOCHS}")

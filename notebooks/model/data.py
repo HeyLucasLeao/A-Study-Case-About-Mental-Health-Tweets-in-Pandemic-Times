@@ -11,20 +11,20 @@ TOKENIZER = AutoTokenizer.from_pretrained(config['model']['model_name'], do_lowe
 
 class ShapingDataset(Dataset):
 
-    def __init__(self, text, target, max_len):
+    def __init__(self, texts, targets, max_len):
         super().__init__()
-        self.text = text
+        self.texts = texts
         self.tokenizer = TOKENIZER
-        self.target = target
+        self.targets = targets
         self.max_len = max_len
 
     def __len__(self):
-        return len(self.text)
+        return len(self.texts)
 
     def __getitem__(self, item):
-        text = str(self.text[item])
+        texts = str(self.texts[item])
         encoding = self.tokenizer(
-        text,
+        texts,
         padding='max_length',
         truncation=True,
         return_tensors='pt',
@@ -33,13 +33,13 @@ class ShapingDataset(Dataset):
         return {
             'input_ids': encoding['input_ids'],
             'attention_mask': encoding['attention_mask'],
-            'targets': torch.FloatTensor([self.target[item]]) 
+            'targets': torch.FloatTensor([self.targets[item]]) 
         }
 
 def create_dataloader(df, max_len, bs, num_workers=4):
     dataset = ShapingDataset(
-        text=df['text'].to_numpy(),
-        target=df['target'].to_numpy(),
+        texts=df['texts'].to_numpy(),
+        targets=df['targets'].to_numpy(),
         max_len=max_len
     )
     data_loader = DataLoader(dataset, bs, num_workers)
