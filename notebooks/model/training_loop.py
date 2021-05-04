@@ -1,13 +1,11 @@
-from torch.utils.data import DataLoader
 import pandas as pd
 import numpy as np
 import yaml
 import torch
-from collections import defaultdict
 import random
+from transformers import AdamW, get_linear_schedule_with_warmup
 from data import create_dataloader
 from model import Classifier, criterion
-from transformers import AdamW, get_linear_schedule_with_warmup
 from training_structure import train_epoch, eval_model
 
 SEED = 42
@@ -15,6 +13,9 @@ random.seed(SEED)
 np.random.seed(SEED)
 torch.manual_seed(SEED)
 torch.cuda.manual_seed_all(SEED)
+
+"""Clearing GPU Memory"""
+torch.cuda.empty_cache()
 
 with open('config.yml', 'r') as f:
     config = yaml.safe_load(f)
@@ -69,7 +70,7 @@ for epoch in range(EPOCHS):
     print(f"Epoch {epoch + 1}/{EPOCHS}")
     print(f"-" * 10)
    
-    train_loss = train_epoch(
+    train_loss, train_acc = train_epoch(
         model, 
         TRAIN_DATA_LOADER,
         criterion,
@@ -77,22 +78,15 @@ for epoch in range(EPOCHS):
         device,
         scheduler,
         )
-    print(f"Train loss {train_loss} accuracy {train_acc}")
+    print(f"Train Loss {train_loss} Train Acc {train_acc}")
 
-    val_loss = eval_model(
+    val_loss, val_acc = eval_model(
         model, 
         VALID_DATA_LOADER,
         criterion,
-        optimizer,
         device,
-        scheduler,
         )
-    print(f"Val loss {train_loss} accuracy {train_acc}")
+    print(f"Val Loss {val_loss} Val Acc {val_acc}")
 
 
-history = defaultdict(list)
-best_accuracy = 0
-
-history['train_loss'].append(train_loss)
-history['val_loss'].append(val_loss)
 torch.save(model, 'model.pth')

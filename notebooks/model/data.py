@@ -28,12 +28,12 @@ class ShapingDataset(Dataset):
         padding='max_length',
         truncation=True,
         return_tensors='pt',
-        max_length=int(config['model']['max_seq_length'])
+        max_length=config['model']['max_seq_length']
         )
         return {
             'input_ids': encoding['input_ids'],
             'attention_mask': encoding['attention_mask'],
-            'targets': torch.tensor(self.target[item], dtype=torch.double) 
+            'targets': torch.FloatTensor([self.target[item]]) 
         }
 
 def create_dataloader(df, max_len, bs, num_workers=4):
