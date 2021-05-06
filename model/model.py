@@ -6,7 +6,7 @@ with open('config.yml', 'r') as f:
     config = yaml.safe_load(f)
 
 MODEL = AutoModel.from_pretrained(config['model']['model_name'])
-criterion = torch.nn.BCELoss()
+criterion = torch.nn.CrossEntropyLoss()
 
 
 for param in MODEL.parameters():
@@ -28,11 +28,11 @@ class Classifier(torch.nn.Module):
         )
         self.linear3 = torch.nn.Linear(
             in_features=500,
-            out_features=1
+            out_features=config['model']['n_classes']
         )
         self.relu = torch.nn.ReLU()
         self.dropout = torch.nn.Dropout(0.3)
-        self.sigmoid = torch.nn.Sigmoid()
+        self.sigmoid = torch.nn.Softmax()
 
     def forward(self, input_ids, attention_mask):
         output = self.pretrained_model.forward(
@@ -47,6 +47,6 @@ class Classifier(torch.nn.Module):
         output = self.relu(output)
         output = self.dropout(output)
         output = self.linear3(output)
-        output = self.sigmoid(output)
+        output = self.Softmax(output)
         return output
 
