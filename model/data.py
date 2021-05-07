@@ -33,7 +33,7 @@ class ShapingDataset(Dataset):
         return {
             'input_ids': encoding['input_ids'],
             'attention_mask': encoding['attention_mask'],
-            'targets': torch.FloatTensor([self.targets[item]]) 
+            'targets': torch.LongTensor([self.targets[item]]) 
         }
 
 def create_dataloader(df, max_len, bs, num_workers=4):

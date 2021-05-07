@@ -15,24 +15,21 @@ def train_epoch(
 
     model.train()
     losses = []
-    train_acc = 0
 
     for data in data_loader:
         input_ids = data['input_ids'].to(device)
         attention_mask = data['attention_mask'].to(device)
-        targets = data['targets'].to(device).view(-1, 1)
+        targets = torch.flatten(data['targets'].to(device))
 
         outputs = model(
             input_ids=input_ids.squeeze(),
             attention_mask=attention_mask.squeeze()
-            )        
+            )
+
         #função de perda
-        predictions = (outputs >= 0.50).type(torch.long)
         loss = criterion(outputs, targets)
         losses.append(loss.item())
-
-        #Eval Accuracy
-        train_acc += torch.sum(predictions == targets)
+        #Train Accuracy
         
         #Back Propagation
         optimizer.zero_grad()
@@ -42,10 +39,9 @@ def train_epoch(
         #atualiza o learning rate
         scheduler.step()
 
-    total_acc = train_acc/len(data_loader.dataset)
     avg_loss = np.mean(losses)
 
-    return avg_loss,total_acc
+    return avg_loss
 
 def eval_model(
             model, 
@@ -55,28 +51,24 @@ def eval_model(
 
     model.eval()
     losses = []
-    eval_acc = 0
     with torch.no_grad():
         for data in data_loader:
 
             input_ids = data['input_ids'].to(device)
             attention_mask = data['attention_mask'].to(device)
-            targets = data['targets'].to(device)
+            targets = torch.flatten(data['targets'].to(device))
 
-            outputs = model(
+            probability = model(
                 input_ids=input_ids,
                 attention_mask=attention_mask
                 )
 
             #função de perda
-            predictions = (outputs >= 0.50).type(torch.long)
-            loss = criterion(outputs, targets)
+            loss = criterion(probability, targets)
             losses.append(loss.item())
 
             #Eval Accuracy
-            eval_acc += torch.sum(predictions == targets)
 
 
-    total_acc = eval_acc/len(data_loader.dataset)
     avg_loss = np.mean(losses)
-    return avg_loss, total_acc
+    return avg_loss
