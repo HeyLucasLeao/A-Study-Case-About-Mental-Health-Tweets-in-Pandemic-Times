@@ -59,18 +59,19 @@ optimizer = AdamW(
 scheduler = get_linear_schedule_with_warmup(
     optimizer,
     num_warmup_steps=config['model']['num_warmup_steps'],
-    num_training_steps=config['model']['num_epochs']
+    num_training_steps=config['model']['num_epochs'] * config['model']['batch_size']
 )
 
 """Training Loop"""
 
 EPOCHS = config['model']['num_epochs']
 
+
 for epoch in range(EPOCHS):
     print(f"Epoch {epoch + 1}/{EPOCHS}")
     print(f"-" * 10)
    
-    train_loss = train_epoch(
+    train_loss, train_acc = train_epoch(
         model, 
         TRAIN_DATA_LOADER,
         criterion,
@@ -78,15 +79,15 @@ for epoch in range(EPOCHS):
         device,
         scheduler,
         )
-    print(f"Train Loss {train_loss}")
+    print(f"Train Loss {train_loss} Train Accuracy {train_acc}")
 
-    val_loss = eval_model(
+    val_loss, eval_acc = eval_model(
         model, 
         VALID_DATA_LOADER,
         criterion,
         device,
         )
-    print(f"Val Loss {val_loss}")
+    print(f"Val Loss {val_loss} Eval Accuracy {eval_acc}")
 
 
 torch.save(model, 'model.pth')
