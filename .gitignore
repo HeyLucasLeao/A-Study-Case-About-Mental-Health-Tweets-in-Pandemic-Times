@@ -3,4 +3,4 @@ __pycache__
 *.vscode
 *.pth
 data
-logger.txt
+frequency.csv

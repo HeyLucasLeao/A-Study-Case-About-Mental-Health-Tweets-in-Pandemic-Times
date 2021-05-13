@@ -1,4 +1,25 @@
 import streamlit as st
+import pandas as pd
+import numpy as np
+import plotly.express as px
+import plotly.graph_objects as go
+from os import listdir
+
+PATH = r'C:\Users\heylu\Documents\github\A Study Case About Mental Health Tweets in Pandemic Times\streamlit\frequency.csv'
+
+frequency = pd.read_csv(PATH)
+
+frequency_per_day = frequency.groupby('date').sum()
+frequency_per_day.index = pd.to_datetime(frequency_per_day.index)
+frequency_per_day.index.freq = 'D'
+frequency_per_month = frequency_per_day.groupby(pd.Grouper(freq='M')).sum()
+frequency_per_month.drop(columns='labels', inplace=True)
+frequency_per_day.drop(columns='labels', inplace=True)
+
+fig_frequency_per_day = px.line(frequency_per_day)
+fig_frequency_per_month = px.line(frequency_per_month)
+
+st.set_page_config(page_title='Ansiedade e Pandemia')
 
 st.title('Ansiedade e Pandemia: Análise Exploratória no Twitter ao longo de 4 anos.')
 
@@ -24,6 +45,10 @@ Como twitter há uma quantidade enorme de dados, resolvi seguir as seguintes reg
 Seguindo estas regras, foi coletado cerca de 7,5 milhões de tweets, na qual podem ser baixados pelo [archive](https://archive.org/download/scraping-em-ansiedade/), um número que considerei atrativo
 para ter noção de magnitude sobre ansiedade. Foram preservados os nomes dos usuários para tal.
 
+{st.plotly_chart(fig_frequency_per_day)}
+
+{st.plotly_chart(fig_frequency_per_month)}
+
 Ainda sim, queria mais respostas, saber se em contextos específicos sobre o tema houve 
 maior crescimento. Como 7,5 milhões é um número muito grande para se categorizar manualmente,
 necessitava de um modelo de aprendizagem de máquina para processamento de linguagem natural, 
@@ -39,6 +64,8 @@ e apenas fazer treinar camadas de um feed forward simples, com o intuito de:
 O modelo pré-treinado que selecionei foi o [BERTimbau](https://huggingface.co/neuralmind/bert-base-portuguese-cased), disponível pelo site Hugging Face.
 A arquitetura e construção do modelo se encontra no [repositório deste projeto.](https://github.com/HeyLucasLeao/A-Study-Case-About-Mental-Health-Tweets-in-Pandemic-Times)
  
-Durante o treino, obteve 94% de acurácia nos dados de treino e 83% nos dados de validação. 
+Durante o treino, obteve 94% de acurácia nos dados de treino e 83% nos dados de validação. Tanto 
+os dados de treino, teste e o logger estão dentro do repositório.
+
 Como este estudo tem como objetivo uma dimensão de magnitude, considerei o percentual de acerto suficiente para satisfazer meus desejos.""")
 

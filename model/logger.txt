@@ -1,0 +1,100 @@
+Epoch 1/20
+----------
+Train Loss 0.8225422748271992 Train Accuracy 0.699532876064333
+Val Loss 0.5987608390195029 Eval Accuracy 0.7757850985221675
+----------
+Epoch 2/20
+----------
+Train Loss 0.4549603247089891 Train Accuracy 0.8538315988647114
+Val Loss 0.5318584867886135 Eval Accuracy 0.8043411330049262
+----------
+Epoch 3/20
+----------
+Train Loss 0.35731475124295975 Train Accuracy 0.8905067407757805
+Val Loss 0.5347292934145246 Eval Accuracy 0.8155018472906405
+----------
+Epoch 4/20
+----------
+Train Loss 0.29658885171871313 Train Accuracy 0.9122516556291391
+Val Loss 0.49606041397367207 Eval Accuracy 0.8141933497536946
+----------
+Epoch 5/20
+----------
+Train Loss 0.26041262295861906 Train Accuracy 0.927300141911069
+Val Loss 0.45851801122937885 Eval Accuracy 0.8262777093596059
+----------
+Epoch 6/20
+----------
+Train Loss 0.2333694253832299 Train Accuracy 0.9354008987701041
+Val Loss 0.47414261528423857 Eval Accuracy 0.8285098522167488
+----------
+Epoch 7/20
+----------
+Train Loss 0.21677046172962283 Train Accuracy 0.9380173841059603
+Val Loss 0.47328383156231474 Eval Accuracy 0.8288947044334976
+----------
+Epoch 8/20
+----------
+Train Loss 0.20957306846482865 Train Accuracy 0.9416095080416274
+Val Loss 0.4423277697392872 Eval Accuracy 0.8477524630541872
+----------
+Epoch 9/20
+----------
+Train Loss 0.19990308523572833 Train Accuracy 0.9464285714285714
+Val Loss 0.4660636101450239 Eval Accuracy 0.8320504926108374
+----------
+Epoch 10/20
+----------
+Train Loss 0.19902721984891703 Train Accuracy 0.9474781220435193
+Val Loss 0.4529406045164381 Eval Accuracy 0.8374384236453202
+----------
+Epoch 11/20
+----------
+Train Loss 0.19890579832902808 Train Accuracy 0.9478476821192053
+Val Loss 0.4597412347793579 Eval Accuracy 0.8320504926108374
+----------
+Epoch 12/20
+----------
+Train Loss 0.20003877422272764 Train Accuracy 0.9485424550614948
+Val Loss 0.45101694975580486 Eval Accuracy 0.8374384236453202
+----------
+Epoch 13/20
+----------
+Train Loss 0.2010320472401499 Train Accuracy 0.9465763954588459
+Val Loss 0.4820006319454738 Eval Accuracy 0.8266625615763548
+----------
+Epoch 14/20
+----------
+Train Loss 0.20198583242711643 Train Accuracy 0.9471233443708609
+Val Loss 0.4635609771524157 Eval Accuracy 0.8401323891625615
+----------
+Epoch 15/20
+----------
+Train Loss 0.19943849747346726 Train Accuracy 0.9488824503311258
+Val Loss 0.47246366313525606 Eval Accuracy 0.8347444581280788
+----------
+Epoch 16/20
+----------
+Train Loss 0.19507546594600803 Train Accuracy 0.9473007332071902
+Val Loss 0.45885404518672396 Eval Accuracy 0.8401323891625615
+----------
+Epoch 17/20
+----------
+Train Loss 0.1978823963972117 Train Accuracy 0.9477146404919584
+Val Loss 0.462242100919996 Eval Accuracy 0.8320504926108374
+----------
+Epoch 18/20
+----------
+Train Loss 0.1960200152255052 Train Accuracy 0.9511293755912962
+Val Loss 0.4580258939947401 Eval Accuracy 0.8347444581280788
+----------
+Epoch 19/20
+----------
+Train Loss 0.1980745205717371 Train Accuracy 0.9493407048249762
+Val Loss 0.4644085764884949 Eval Accuracy 0.8320504926108374
+----------
+Epoch 20/20
+----------
+Train Loss 0.20228851571777798 Train Accuracy 0.946886825922422
+Val Loss 0.4611469805240631 Eval Accuracy 0.8347444581280788
+----------
