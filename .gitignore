@@ -2,5 +2,5 @@
 __pycache__
 *.vscode
 *.pth
-*.csv
+data
 logger.txt
