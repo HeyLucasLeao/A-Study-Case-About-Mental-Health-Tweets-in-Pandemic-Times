@@ -1,5 +1,5 @@
 data:
-  path_to_data: C:\Users\heylu\Documents\github\A Study Case About Mental Health Tweets in Pandemic Times\data\dataset
+  path_to_data: C:\Users\heylu\Documents\github\ansiedade-e-pandemia\data\dataset
   train_filename: dataset_train.csv
   test_filename: dataset_test.csv
   validation_filename: dataset_valid.csv

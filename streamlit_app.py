@@ -2,8 +2,8 @@ import streamlit as st
 import pandas as pd
 import plotly.express as px
 
-PATH = r'C:\Users\heylu\Documents\github\A Study Case About Mental Health Tweets in Pandemic Times\streamlit\frequency.csv'
-TREND = r'C:\Users\heylu\Documents\github\A Study Case About Mental Health Tweets in Pandemic Times\streamlit\trend.csv'
+PATH = r'C:\Users\heylu\Documents\github\ansiedade-e-pandemia\streamlit-data\frequency.csv'
+TREND = r'C:\Users\heylu\Documents\github\ansiedade-e-pandemia\streamlit-data\trend.csv'
 
 def fig_frequency_per_day():
     fig = px.line(frequency_per_day.rename(columns={'quantidade': 'Tweets'}), 
