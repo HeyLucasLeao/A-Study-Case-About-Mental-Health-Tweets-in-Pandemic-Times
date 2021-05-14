@@ -1,8 +1,6 @@
 import streamlit as st
 import pandas as pd
-import numpy as np
 import plotly.express as px
-import plotly.graph_objects as go
 
 PATH = r'C:\Users\heylu\Documents\github\A Study Case About Mental Health Tweets in Pandemic Times\streamlit\frequency.csv'
 TREND = r'C:\Users\heylu\Documents\github\A Study Case About Mental Health Tweets in Pandemic Times\streamlit\trend.csv'
@@ -243,7 +241,7 @@ pico no mês de março de 2020.""")
 st.write("""A partir disto, gostaria também saber qual seria a predição para os próximos 
 meses. Para isto, selecionei meu modelo preferido para dados sequencias, o [Light GBM](https://lightgbm.readthedocs.io/en/latest/), 
 e o treinei a partir da frequência por dias. Com hiperparâmetros selecionados por [método Bayesiano](https://scikit-optimize.github.io/stable/modules/generated/skopt.gp_minimize.html), 
-ele atingiu em média 10% de sMAPE na validação cruzada por [Expanding Window Splitter](https://www.sktime.org/en/latest/api_reference/modules/auto_generated/sktime.forecasting.model_selection.ExpandingWindowSplitter.html), um dos
+ele atingiu em média 10% de erro percentual absoluto médio simétrico na validação cruzada por [Expanding Window Splitter](https://www.sktime.org/en/latest/api_reference/modules/auto_generated/sktime.forecasting.model_selection.ExpandingWindowSplitter.html), um dos
 métodos de validação cruzada para séries temporais. Devido a sazonalidade diária e apenas meu 
 desejo de observar a tendência, suavizei exponencialmente esta predição, por Holt & Winters.
 É possível observar uma possível continuiação de tendência sobre o tema ao redor deste ano, com uma média de 
