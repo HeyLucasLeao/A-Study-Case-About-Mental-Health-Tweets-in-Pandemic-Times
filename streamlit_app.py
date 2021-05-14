@@ -89,6 +89,7 @@ def fig_frequency_per_label():
     title='Frequência por Categoria (Diária)')
     fig.update_yaxes(matches=None)
     fig.update_layout(hovermode='x', separators=",.")
+    fig.update_xaxes(showticklabels=True)
     fig.update_traces(showlegend=False, hovertemplate="%{y:,f}")
     fig.for_each_annotation(lambda a: a.update(text=a.text.split("=")[1], textangle=45))
     return fig
@@ -106,6 +107,7 @@ def fig_frequency_per_label_per_month():
     facet_row='labels', 
     labels={'quantidade': 'Tweets', 'date': 'Data'},
     title='Frequência por Categoria (Mensal)')
+    fig.update_xaxes(showticklabels=True)
     fig.update_yaxes(matches=None)
     fig.update_layout(hovermode='x', separators=",.")
     fig.update_traces(showlegend=False, hovertemplate="%{y:,f}")
@@ -244,12 +246,12 @@ e o treinei a partir da frequência por dias. Com hiperparâmetros selecionados 
 ele atingiu em média 10% de erro percentual absoluto médio simétrico na validação cruzada por [Expanding Window Splitter](https://www.sktime.org/en/latest/api_reference/modules/auto_generated/sktime.forecasting.model_selection.ExpandingWindowSplitter.html), um dos
 métodos de validação cruzada para séries temporais. Devido a sazonalidade diária e apenas meu 
 desejo de observar a tendência, suavizei exponencialmente esta predição, por Holt & Winters.
-É possível observar uma possível continuiação de tendência sobre o tema ao redor deste ano, com uma média de 
+É possível observar uma possível continuação de tendência sobre o tema ao redor deste ano, com uma média de 
 tweets por mês chegando a 539 mil.""")
 
 st.plotly_chart(fig_trend())
 
-st.write("""Assim me vi questionando a última vez que conversei abertamente sobre saúde menta
+st.write("""Assim me vi questionando a última vez que conversei abertamente sobre saúde mental
 com meus amigos, após ver todos estes números. Fico feliz, até dizer, que temas sobre saúde 
 mental tem aumentado ao longo do tempo, entretanto, também fica um alerta ao leitor sobre 
 questionar-se a última vez desde que procurou ajuda. É por este objetivo que acredito ser 
