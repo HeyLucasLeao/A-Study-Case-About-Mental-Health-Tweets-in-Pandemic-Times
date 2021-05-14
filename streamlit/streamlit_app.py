@@ -249,3 +249,11 @@ tweets por mês chegando a 539 mil.""")
 
 st.plotly_chart(fig_trend())
 
+st.write("""Assim me vi questionando a última vez que conversei abertamente sobre saúde menta
+com meus amigos, após ver todos estes números. Fico feliz, até dizer, que temas sobre saúde 
+mental tem aumentado ao longo do tempo, entretanto, também fica um alerta ao leitor sobre 
+questionar-se a última vez desde que procurou ajuda. É por este objetivo que acredito ser 
+importante publicar este pequeno estudo, como uma forma de pedido para que caso tenha o 
+privilégio ao acesso e a disponibilidade de algum sistema de saúde para acompanhamento ou 
+grupo de apoio, que o faça. Saúde mental é um assunto importante na qual não pode passar 
+desapercebido por ninguém, principalmente em plena pandemia.""")
