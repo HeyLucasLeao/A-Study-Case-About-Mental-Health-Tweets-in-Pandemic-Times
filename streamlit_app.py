@@ -2,7 +2,7 @@ import streamlit as st
 import pandas as pd
 import plotly.express as px
 
-PATH = r'frequency.csv'
+PATH = r'frequency.zip'
 TREND = r'trend.csv'
 
 def fig_frequency_per_day():
