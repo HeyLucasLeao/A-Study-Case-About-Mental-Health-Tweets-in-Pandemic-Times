@@ -211,9 +211,9 @@ Como este estudo tem como objetivo uma dimensão de magnitude, considerei o perc
 
 st.plotly_chart(fig_total_labels())
 
-st.write("""Após processamento dos dados, foi identificado que 66,54% falam sobre ansiedade em geral,
-5,61% sobre tratamentos para tal, 20,01% para crises, 6,01% sobre tópicos relacionados a 
-depressão junto a ansiedade e 1,83% sobre tweets relacionados a possíveis assuntos mais 
+st.write("""Após processamento dos dados, foi identificado que 66,54% falam sobre ansiedade em geral, 
+apenas 5,61% sobre tratamentos para tal, 20,01% para crises, 6,01% sobre tópicos relacionados 
+a depressão junto a ansiedade e 1,83% sobre tweets relacionados a possíveis assuntos mais 
 graves, como suicídio.""")
 
 box2 = st.selectbox('Selecione período do gráfico',('Diário', 'Mensal'), key=2)
