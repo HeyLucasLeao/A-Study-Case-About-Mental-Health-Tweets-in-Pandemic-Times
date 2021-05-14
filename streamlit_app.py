@@ -156,27 +156,26 @@ st.set_page_config(page_title='Ansiedade e Pandemia')
 
 st.title('Ansiedade e Pandemia: Análise Exploratória no Tweets ao longo de 4 anos.')
 
-st.write(f"""Qualquer pesquisa, seja ela, vem por meio de uma curiosidade, um problema ou 
+st.write(f"""Toda pesquisa, seja ela, vem por meio de uma curiosidade, um problema ou 
 um interesse para com sociedade. Isto não foi tão diferente deste projeto. Por vezes,
 desde que me isolei em casa, fiquei me questionando quanto a saúde mental minha e de
 colegas. Como eu, por exemplo, trabalho ativamente [em um projeto sobre Covid-19](https://heylucasleao.github.io/), não é tão fácil manter a cabeça tão sã com um
-projeto desse todos os dias, e nem imagino como seja para a linha de frente, mas enfim. Eu, que
-tenho o privilégio de ter acompanhamento de um psiquiatra, comecei a me questionar quanto ao aumento de casos como
+projeto desse todos os dias, e nem imagino como seja para a linha de frente. Eu, que tenho o privilégio de ter acompanhamento de um psiquiatra, comecei a me questionar quanto ao aumento de casos como
 depressão ou ansiedade durante pandemia. Com [alguns artigos](https://www.nossasaude.com.br/dicas-de-saude/pandemia-aumenta-casos-de-depressao-e-ansiedade-no-brasil/), pude
-perceber que de fato estava indo ao pensamento correto, mas queria trabalhar com que sei e com o que posso. Neste
-caso, resolvi saber se houve um número de tweets, isto é, mensagens publicadas pela rede social Twitter,
-com a palavra chave ansiedade, seguindo algumas regras na qual falarei ao próximo parágrafo, durante o 
+perceber que de fato estava indo ao pensamento correto, e queria trabalhar com que sei e com o que posso. Neste
+caso, resolvi saber se houve um crescimento de tweets, isto é, mensagens publicadas pela rede social Twitter,
+com a palavra chave ansiedade, seguindo algumas regras na qual falarei no próximo parágrafo, durante o 
 período de janeiro de 2018 a março de 2021.
 
-Como twitter há uma quantidade enorme de dados, resolvi seguir as seguintes regras para filtragem:
+Como twitter há uma quantidade enorme de dados, estabeleci as seguintes regras:
 
-    1. Não haveria tweets a partir de retweets.
-    2. Os mesmos, não poderiam contar links.
-    3. Sem hashtags.
-    4. Não haveria tweets iguais.
+    1. Tweets a partir de retweets não serão contados.
+    2. Os mesmos, não poderiam conter links, tampouco hashtags.
+    3. Tweets iguais não serão contados.
     
-Seguindo estas regras, foi coletado cerca de 7,5 milhões de tweets, na qual podem ser baixados pelo [archive](https://archive.org/download/scraping-em-ansiedade/), um número que considerei atrativo
-para ter noção de magnitude sobre ansiedade. Foram preservados os nomes dos usuários para tal.""")
+Seguindo estas regras, foram coletados cerca de 7,5 milhões de tweets, os quais podem ser baixados pelo [archive](https://archive.org/download/scraping-em-ansiedade/), 
+um número que considerei substancial para uma noção de magnitude sobre o tema. 
+Por motivos de segurança, foram removidos os nomes dos usuários de cada tweet.""")
 
 box1 = st.selectbox('Selecione período do gráfico',('Diário', 'Mensal', 'Anual'), key=1)
 
@@ -189,31 +188,32 @@ elif 'Anual' in box1:
 Um detalhe que, apenas 4 meses de 2021 já foram maiores que o ano inteiro de 2019.""")
     st.plotly_chart(fig_frequency_per_year())
 
-st.write("""Ainda sim, queria mais respostas, saber se em contextos específicos sobre o tema houve 
+st.write("""Ainda sim, queria mais respostas. A partir disso, procurei saber se em contextos específicos sobre o tema houve 
 maior crescimento. Como 7,5 milhões é um número muito grande para se categorizar manualmente,
-necessitava de um modelo de aprendizagem de máquina para processamento de linguagem natural, 
-e um que vem se destacando atualmente por sua capacidade de extrair contextos 
-por meio de Self-Attention é o modelo [BERT](https://huggingface.co/transformers/model_doc/bert.html).
+necessitava de um modelo de aprendizagem de máquina para processamento de linguagem natural. 
+Um que vem se destacando atualmente por sua capacidade de extrair contextos 
+por meio de Self-Attention é o modelo [BERT](https://huggingface.co/transformers/model_doc/bert.html), baseado
+nas camadas encoders dos [Transformers](https://huggingface.co/transformers/).
 Como não tenho capacidade computacional muito grande, tampouco um banco de dados grande para treinar do zero,
 resolvi utilizar um modelo pré-treinado para [Transfer Learning](https://machinelearningmastery.com/transfer-learning-for-deep-learning/#:~:text=Transfer%20learning%20is%20a%20machine,model%20on%20a%20second%20task.&text=Common%20examples%20of%20transfer%20learning,your%20own%20predictive%20modeling%20problems.), 
-e apenas fazer treinar camadas de um feed forward simples, com o intuito de:
+e apenas treinar camadas de um feed forward simples, com o intuito de:
 
     O modelo pré-treinado entenderá semântica brasileira, enquanto o feed forward aprenderá 
     o contexto atual.
 
-O modelo pré-treinado que selecionei foi o [BERTimbau](https://huggingface.co/neuralmind/bert-base-portuguese-cased), disponível pelo site Hugging Face.
-A arquitetura e construção do modelo se encontra no [repositório deste projeto.](https://github.com/HeyLucasLeao/A-Study-Case-About-Mental-Health-Tweets-in-Pandemic-Times)
+O modelo pré-treinado selecionado foi o [BERTimbau](https://huggingface.co/neuralmind/bert-base-portuguese-cased), disponível pelo site Hugging Face.
+A arquitetura e construção do modelo se encontra no [repositório deste projeto.](https://github.com/HeyLucasLeao/ansiedade-e-pandemia)
  
-Durante o treino, obteve 94% de acurácia nos dados de treino e 83% nos dados de validação. Tanto 
+Durante o treino, o modelo chegou a 94% de acurácia nos dados de treino e 83% nos dados de validação. Tanto 
 os dados de treino, teste e o logger estão dentro do repositório.
 
-Como este estudo tem como objetivo uma dimensão de magnitude, considerei o percentual de acerto suficiente para satisfazer meus desejos.""")
+Devido ao objetivo deste projeto, considerei o percentual de acurácia suficiente para satisfazer meus desejos.""")
 
 st.plotly_chart(fig_total_labels())
 
-st.write("""Após processamento dos dados, foi identificado que 66,54% falam sobre ansiedade em geral, 
-apenas 5,61% sobre tratamentos para tal, 20,01% para crises, 6,01% sobre tópicos relacionados 
-a depressão junto a ansiedade e 1,83% sobre tweets relacionados a possíveis assuntos mais 
+st.write("""Após processamento dos dados, foi identificado que 66,54% dos tweets coletados tratam-se sobre ansiedade 
+em geral, 20,01% para crises, 6,01% sobre tópicos relacionados a depressão junto a ansiedade, apenas 
+5,61% sobre tratamentos para tal e 1,83% sobre tweets relacionados a possíveis assuntos mais 
 graves, como suicídio.""")
 
 box2 = st.selectbox('Selecione período do gráfico',('Diário', 'Mensal'), key=2)
@@ -224,9 +224,9 @@ elif 'Mensal' in box2:
     st.plotly_chart(fig_frequency_per_label_per_month())
 
 st.write("""Ao visualizar a frequência de cada categoria por dia e por mês, observou-se que 
-seus aumentos foram similares e proporcionais, sem identificar um crescimento específico em 
-uma delas em alguma época, o que responde minha dúvida se algum tema teve um pico específico 
-comparado aos outros.""")
+seus aumentos foram similares e proporcionais ao longo do tempo, sem identificar um crescimento específico em 
+uma delas em alguma época, o que responde minha dúvida quanto à existência 
+de um pico específico em um tema comoparado aos outros.""")
 
 box3 = st.selectbox('Selecione período do gráfico',('Anual', 'Mensal'), key=3)
 
@@ -238,24 +238,30 @@ elif 'Mensal' in box3:
 st.write("""Observando pelo crescimento percentual, vemos que 2019 teve um aumento de 57% 
 sobre tweets, e 100% em 2020 comparado 2019. Dividindo cada crescimento percentual por meses
 a partir de 2018, conseguimos observar uma tendência de aumento ao redor dos meses, com o 
-pico no mês de março de 2020.""")
+pico no mês de março de 2020. Para 2019, podemos correlacionar a falta de diretrizes para sanar
+a crise econômica, enquanto para 2020, podemos correlacionar com a pandemia, os sentimentos
+manifestados durante toda a questão com a saúde pública e as incertezas sobre o futuro do Brasil.""")
 
-st.write("""A partir disto, gostaria também saber qual seria a predição para os próximos 
+st.write("""A partir disto, procurei entender qual seria a predição para os próximos 
 meses. Para isto, selecionei meu modelo preferido para dados sequencias, o [Light GBM](https://lightgbm.readthedocs.io/en/latest/), 
-e o treinei a partir da frequência por dias. Com hiperparâmetros selecionados por [método Bayesiano](https://scikit-optimize.github.io/stable/modules/generated/skopt.gp_minimize.html), 
-ele atingiu em média 10% de erro percentual absoluto médio simétrico na validação cruzada por [Expanding Window Splitter](https://www.sktime.org/en/latest/api_reference/modules/auto_generated/sktime.forecasting.model_selection.ExpandingWindowSplitter.html), um dos
+o qual foi selecionado devido aos seus ótimos resultados apresentados em diversas competições de Machine Learning.
+A partir disto, ele foi treinado com a frequência de tweets por dias, e seus hiperparâmetros selecionados por [método Bayesiano](https://scikit-optimize.github.io/stable/modules/generated/skopt.gp_minimize.html), 
+atingindo uma média de 10% de erro percentual absoluto médio simétrico na validação cruzada por [Expanding Window Splitter](https://www.sktime.org/en/latest/api_reference/modules/auto_generated/sktime.forecasting.model_selection.ExpandingWindowSplitter.html), um dos
 métodos de validação cruzada para séries temporais. Devido a sazonalidade diária e apenas meu 
-desejo de observar a tendência, suavizei exponencialmente esta predição, por Holt & Winters.
-É possível observar uma possível continuação de tendência sobre o tema ao redor deste ano, com uma média de 
-tweets por mês chegando a 539 mil.""")
+desejo de observar a tendência de crescimento, suavizei exponencialmente esta predição por [Holt & Winters.](https://www.opservices.com.br/holt-winters/)
+É possível observar a continuação desta tendência sobre o tema ao redor deste ano, com uma média de 
+tweets por mês chegando a 539 mil, um valor substancialmente alto se tratando de meses passados.""")
 
 st.plotly_chart(fig_trend())
 
-st.write("""Assim me vi questionando a última vez que conversei abertamente sobre saúde mental
+st.write("""Com isso, me vi questionando a última vez que conversei abertamente sobre saúde mental
 com meus amigos, após ver todos estes números. Fico feliz, até dizer, que temas sobre saúde 
-mental tem aumentado ao longo do tempo, entretanto, também fica um alerta ao leitor sobre 
-questionar-se a última vez desde que procurou ajuda. É por este objetivo que acredito ser 
-importante publicar este pequeno estudo, como uma forma de pedido para que caso tenha o 
+mental têm sido mais debatido nos últimos anos, entretanto, isto não significa necessariamente
+que a busca por auxílio psicológico também esteja aumentando na mesma proporção, o que fica um 
+alerta ao leitor sobre questionar-se a última vez desde que procurou ajuda. É por este objetivo que acredito ser 
+importante compartilhar este pequeno estudo, como uma forma de pedido para que caso tenha o 
 privilégio ao acesso e a disponibilidade de algum sistema de saúde para acompanhamento ou 
-grupo de apoio, que o faça. Saúde mental é um assunto importante na qual não pode passar 
+grupo de apoio, que o faça. Dependendo do local, há também acessos gratuitos, como Unidade Básica de Saúde (UBS),
+clínicas universitárias de psicologia aplicada, Centros de Atenção Psicossociais (CAPS), Centro de Valorização da Vida (CVV)
+e pronto atendimentos designados pelas respectivas prefeituras e localidades. Saúde mental é um assunto importante na qual não pode passar 
 desapercebido por ninguém, principalmente em plena pandemia.""")
