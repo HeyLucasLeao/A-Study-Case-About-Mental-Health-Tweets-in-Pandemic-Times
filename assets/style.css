@@ -1,0 +1,12 @@
+:root {
+    --global-font-size: 15px;
+    --global-line-height: 1.4em;
+    --background-color: #222225;
+    --font-color: #37ad1a;
+    --invert-font-color: #222225;
+    --primary-color: #62c4ff;
+    --secundary-color: #a3abba;
+    --tertiary-color: #a3abba;
+    --error-color: #ff3c74;
+
+}
