@@ -159,7 +159,7 @@ st.title('Ansiedade e Pandemia: Análise Exploratória no Tweets ao longo de 4 a
 st.write(f"""Toda pesquisa, seja ela, vem por meio de uma curiosidade, um problema ou 
 um interesse para com sociedade. Isto não foi tão diferente deste projeto. Por vezes,
 desde que me isolei em casa, fiquei me questionando quanto a saúde mental minha e de
-colegas. Como eu, por exemplo, trabalho ativamente [em um projeto sobre Covid-19](https://heylucasleao.github.io/), não é tão fácil manter a cabeça tão sã com um
+colegas. Como eu, por exemplo, trabalho ativamente [em um projeto sobre Covid-19](https://share.streamlit.io/heylucasleao/covid-no-amazonas/main), não é tão fácil manter a cabeça tão sã com um
 projeto desse todos os dias, e nem imagino como seja para a linha de frente. Eu, que tenho o privilégio de ter acompanhamento de um psiquiatra, comecei a me questionar quanto ao aumento de casos como
 depressão ou ansiedade durante pandemia. Com [alguns artigos](https://www.nossasaude.com.br/dicas-de-saude/pandemia-aumenta-casos-de-depressao-e-ansiedade-no-brasil/), pude
 perceber que de fato estava indo ao pensamento correto, e queria trabalhar com que sei e com o que posso. Neste
@@ -201,7 +201,7 @@ e apenas treinar camadas de um feed forward simples, com o intuito de:
     O modelo pré-treinado entenderá semântica brasileira, enquanto o feed forward aprenderá 
     o contexto atual.
 
-O modelo pré-treinado selecionado foi o [BERTimbau](https://huggingface.co/neuralmind/bert-base-portuguese-cased), disponível pelo site Hugging Face.
+O modelo pré-treinado selecionado foi o [BERTimbau](https://huggingface.co/neuralmind/bert-base-portuguese-cased), disponível pelo site [Hugging Face](https://huggingface.co/).
 A arquitetura e construção do modelo se encontra no [repositório deste projeto.](https://github.com/HeyLucasLeao/ansiedade-e-pandemia)
  
 Durante o treino, o modelo chegou a 94% de acurácia nos dados de treino e 83% nos dados de validação. Tanto 
