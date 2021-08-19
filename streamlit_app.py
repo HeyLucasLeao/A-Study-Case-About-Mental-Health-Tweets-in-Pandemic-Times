@@ -177,7 +177,7 @@ Seguindo estas regras, foram coletados cerca de 7,5 milhões de tweets, os quais
 um número que considerei substancial para uma noção de magnitude sobre o tema. 
 Por motivos de segurança, foram removidos os nomes dos usuários de cada tweet.""")
 
-box1 = st.selectbox('Selecione período do gráfico',('Diário', 'Mensal', 'Anual'), key=1)
+box1 = st.selectbox('Selecione período do gráfico',('Diário', 'Mensal', 'Anual'), key='1')
 
 if 'Diário' in box1:
     st.plotly_chart(fig_frequency_per_day())
@@ -216,7 +216,7 @@ em geral, 20,01% para crises, 6,01% sobre tópicos relacionados a depressão jun
 5,61% sobre tratamentos para tal e 1,83% sobre tweets relacionados a possíveis assuntos mais 
 graves, como suicídio.""")
 
-box2 = st.selectbox('Selecione período do gráfico',('Diário', 'Mensal'), key=2)
+box2 = st.selectbox('Selecione período do gráfico',('Diário', 'Mensal'), key='2')
 
 if 'Diário' in box2:
     st.plotly_chart(fig_frequency_per_label())
@@ -228,7 +228,7 @@ seus aumentos foram similares e proporcionais ao longo do tempo, sem identificar
 uma delas em alguma época, o que responde minha dúvida quanto à existência 
 de um pico específico em um tema comoparado aos outros.""")
 
-box3 = st.selectbox('Selecione período do gráfico',('Anual', 'Mensal'), key=3)
+box3 = st.selectbox('Selecione período do gráfico',('Anual', 'Mensal'), key='3')
 
 if 'Anual' in box3:
     st.plotly_chart(fig_diff_year())
